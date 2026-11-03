@@ -1,0 +1,24 @@
+# 长期记忆落盘目录（含用户隐私，不入库）
+memories_data/
+
+# Python
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+utils/get_childrenmenu_db.py
+sql/
+design/
+.vscode/
+output/
+docs/
+design/
+.vscode/
+.workbuddy/
+node_modules/
+frontend/node_modules/
+frontend/unpackage/
+frontend/project.private.config.json
+software_copyright_src/
+.DS_Store
