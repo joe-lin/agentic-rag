@@ -10,11 +10,7 @@ from __future__ import annotations
 import os
 import logging
 from dotenv import load_dotenv
-
-logger = logging.getLogger("ai-menu.settings")
-
-from settings.paths import ROOT_DIR, DATA_DIR, resolve_path
-
+logger = logging.getLogger("agentic-rag.settings")
 load_dotenv()
 
 
@@ -38,14 +34,36 @@ def _int(name: str, default: int = 0) -> int:
 
 # ==================== 日志 ====================
 LOG_LEVEL = _get("LOG_LEVEL", "INFO").upper()
-DATA_FILE = resolve_path(_get("DATA_FILE", ""))
+
 
 
 chat_model = _get("CHAT_MODEL", "")
-api_key = _get("CHAT_API_KEY", "")
-base_url = _get("CHAT_BASE_URL", "")
+chat_api_key = _get("CHAT_API_KEY", "")
+chat_base_url = _get("CHAT_BASE_URL", "")
 
 
 praison_chat_model = _get("PRAISON_CHAT_MODEL", "")
 praison_api_key = _get("PRAISON_API_KEY", "")
 praison_base_url = _get("PRAISON_BASE_URL", "")
+
+embedding_model = _get("EMBEDDING_MODEL", "")
+embedding_api_key = _get("EMBEDDING_API_KEY", "")
+embedding_base_url = _get("EMBEDDING_BASE_URL", "")
+
+# 向量库
+collection_name = "agentic-rag"
+persist_directory = "data/chroma_db"
+k =  3
+data_path = "data"
+md5_hex_store = "rag/md5.txt"
+allow_knowledge_file_type = ["txt","pdf"]
+
+chunk_size = 200
+chunk_overlap = 20
+separators = ["\n\n", "\n", "。", ".","?","？","!", "；"," ",""]
+
+#prompts
+main_prompt_path = "prompts/main_prompt.txt"
+rag_summarize_prompt_path = "prompts/rag_summarize.txt"
+report_prompt_path = "prompts/report_prompt.txt"
+product_expert_prompt = "prompts/product_expert.txt"
