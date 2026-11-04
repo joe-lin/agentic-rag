@@ -1,6 +1,7 @@
 # 长期记忆落盘目录（含用户隐私，不入库）
-memories_data/
-
+data/
+prompts/
+logs/
 # Python
 __pycache__/
 *.pyc
