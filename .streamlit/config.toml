@@ -1,0 +1,9 @@
+# 关闭 streamlit 文件监视器。
+# 原因：local_sources_watcher 在独立线程里对模块做 hasattr() 探测，会触发
+# transformers 的懒加载子模块导入；若脚本线程恰好在（首次调用 rag 工具时
+# langchain 触发的）transformers 半初始化阶段，双方竞态会导致
+# "ImportError: cannot import name 'is_flax_available'"，流式中断、
+# agent 重试直至撞 loop-guard 超时。关闭后不再监视模块，问题根除。
+# 代价：修改代码后需手动重启 streamlit（不会再自动刷新）。
+[server]
+fileWatcherType = "none"

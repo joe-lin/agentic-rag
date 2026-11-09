@@ -34,7 +34,25 @@ from settings import praison_chat_model, praison_api_key, praison_base_url, embe
 #     def embed_query(self, text):
 #         return self._embed([text])[0]
 
-embed_model = OpenAIEmbeddings(
+class NormalizedOpenAIEmbeddings(OpenAIEmbeddings):
+    """bge-m3 经 SiliconFlow 的 OpenAI 兼容接口返回的是未归一化向量；Chroma 默认
+    用 L2 距离，未归一化时向量模长差异会主导排序，语义相关块反而排不进 top-k。
+    这里在 embed_documents/embed_query 后做 L2 归一化，使 L2 排序等价于余弦排序。
+    """
+    @staticmethod
+    def _norm(vec):
+        import math
+        n = math.sqrt(sum(x * x for x in vec))
+        return [x / n for x in vec] if n else list(vec)
+
+    def embed_documents(self, texts):
+        return [self._norm(v) for v in super().embed_documents(texts)]
+
+    def embed_query(self, text):
+        return self._norm(super().embed_query(text))
+
+
+embed_model = NormalizedOpenAIEmbeddings(
     model=embedding_model,
     api_key=embedding_api_key,
     base_url=embedding_base_url

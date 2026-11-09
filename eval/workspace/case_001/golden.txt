@@ -1,0 +1,10 @@
+# case_001 固定证据包
+# 快照：collection=agentic-rag / k=3 / chunk_size=200 / embedding=BAAI/bge-m3
+# 用途：judge 核对 groundedness 与 retrieval_quality；不喂给被测 Agent。
+
+[chunk 298] source=oceanbase向量能力与ai应用案例集（2025).pdf page=8
+3. 1 OceanBase 向量特性介绍  
+OceanBase 向量数据库提供了完备的向量检索功能，支持基于图的 HNSW 以及基于倒排的 IVF 的索引组织算法；支
+持通用的量化算法，Flat、SQ8、PQ、BQ 等，量化算法和索引组织算法按需结合，以适用各种复杂的向量检索场景。
+提供丰富的距离算法，支持曼哈顿距离、欧式距离、内积、余弦距离等多种类型向量距离的计算，以支持不同应用场景
+---

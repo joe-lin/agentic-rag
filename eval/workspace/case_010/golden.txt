@@ -1,0 +1,9 @@
+# case_010 固定证据包
+# 快照：collection=agentic-rag / k=3 / chunk_size=200 / embedding=BAAI/bge-m3
+# 用途：judge 核对 groundedness 与 retrieval_quality；不喂给被测 Agent。
+
+[chunk 299] source=oceanbase向量能力与ai应用案例集（2025).pdf page=8
+对距离算法的诉求。同时支持稠密向量、稀疏向量，也支持多种类型向量的混合检索，以提升检索效果。
+OceanBase 向量检索具备带有标量过滤的混合检索能力，标量过滤可以辅助快速而且精确地缩小查询空间。基于
+OceanBase 长期在 OLTP 领域的打磨，OceanBase 标量和向量的混合检索提供更强的查询性能。
+---

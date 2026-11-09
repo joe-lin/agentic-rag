@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, re
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -34,9 +34,43 @@ class VectorStoreService:
             ,chunk_overlap=chunk_overlap
             ,length_function=len,
         )
+        self._all_docs = None  # 词法检索用的全量文档缓存，首次需要时加载
 
-    def get_retriever(self):
-        return self.vector_store.as_retriever(search_kwargs={"k": k})
+    def get_retriever(self, k_override=None):
+        return self.vector_store.as_retriever(search_kwargs={"k": k_override if k_override is not None else k})
+
+    # ------------------------------------------------------------------
+    # 词法检索（混合检索用）：bi-encoder 对“密集事实清单”类块常漏召回，
+    # 用字符 bigram 重叠做关键词匹配可稳定命中（不依赖 embedding 质量）。
+    # ------------------------------------------------------------------
+    def _load_all_docs(self) -> list:
+        if self._all_docs is None:
+            data = self.vector_store.get(include=["documents", "metadatas"])
+            self._all_docs = [
+                Document(page_content=d, metadata=m or {})
+                for d, m in zip(data.get("documents", []), data.get("metadatas", []))
+            ]
+        return self._all_docs
+
+    @staticmethod
+    def _bigrams(s: str) -> set:
+        s = re.sub(r"\s+", "", s)
+        return {s[i:i + 2] for i in range(len(s) - 1)}
+
+    @staticmethod
+    def _lex_score(query: str, doc: str) -> float:
+        qb = VectorStoreService._bigrams(query)
+        if not qb:
+            return 0.0
+        db = VectorStoreService._bigrams(doc)
+        return len(qb & db) / len(qb)  # query 的 bigram 在 doc 中的召回率
+
+    def lexical_search(self, query: str, top_n: int = 10) -> list:
+        docs = self._load_all_docs()
+        scored = [(self._lex_score(query, d.page_content), d) for d in docs]
+        scored = [(s, d) for s, d in scored if s > 0]
+        scored.sort(key=lambda x: x[0], reverse=True)
+        return [d for _, d in scored[:top_n]]
 
     def load_document(self):
         """

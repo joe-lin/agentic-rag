@@ -1,0 +1,35 @@
+# agentic-rag 依赖清单（版本取自本机 agentenv 环境，pip freeze 复核）
+# 安装：pip install -r requirements.txt
+
+# ── Agent 编排框架 ──
+praisonaiagents==1.7.14          # Agent 编排 / 工具调用 / 流式输出
+langchain==1.3.13
+langchain-core==1.4.9
+langchain-openai==1.3.3
+langchain-chroma==1.1.0
+langchain-community==0.4.1       # PyPDFLoader / TextLoader（file_handler 用）
+langchain-text-splitters==1.1.2
+openai==2.36.0                   # langchain-openai 与 praisonaiagents 底层
+
+# ── 向量库 / 检索 ──
+chromadb==1.5.9                  # 持久化向量库（Chroma）
+pypdf==6.14.2                    # PyPDFLoader 依赖（PDF 入库）
+
+# ── 检索增强组件 ──
+# langchain_core 加载时强制 import transformers；macOS 12 上 transformers>=5 因
+# torchvision 不可用而失败，故锁定 4.x（详见 README「环境注意」）。升级 macOS 13+
+# 后即可放开此约束。
+transformers==4.57.6
+
+# ── Web 检索工具 ──
+tavily-python==0.8.5             # web_search 工具（需 TAVILY_API_KEY）
+
+# ── Web UI ──
+streamlit==1.57.0
+
+# ── 配置 / 工具 ──
+python-dotenv==1.2.2             # settings 读取 .env
+requests==2.34.2                 # rerank HTTP 调用
+
+# 说明：torch / torchvision 非必需。transformers 在本题仅用于分词器加载，
+# 不加载 PyTorch 模型；如需本地模型推理再另行安装对应版本 torch。

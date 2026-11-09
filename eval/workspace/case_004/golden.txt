@@ -1,0 +1,11 @@
+# case_004 固定证据包
+# 快照：collection=agentic-rag / k=3 / chunk_size=200 / embedding=BAAI/bge-m3
+# 用途：judge 核对 groundedness 与 retrieval_quality；不喂给被测 Agent。
+
+[chunk 351] source=oceanbase向量能力与ai应用案例集（2025).pdf page=21
+• 向量方案：压缩算法 HNSW ：从而可以单分区支撑业务，无须分库分表；未来使用 IVF-SQ8 ：数据量更大
+后，升级到 IVF-SQ8 算法，节省内存；快速索引重建：重建索引仅 25 分钟。
+解决方案和场景描述
+货拉拉创立于2013年，是从事同城/跨城货运、企业版物流服务、搬家、零担、跑腿、冷运、汽车租售及车后市场服
+务的互联网物流商城。2025年，月活司机达100万，月活用户达1350万。
+---

@@ -8,7 +8,6 @@ __pycache__/
 .env
 .env.*
 !.env.example
-utils/get_childrenmenu_db.py
 sql/
 design/
 .vscode/
@@ -18,8 +17,6 @@ design/
 .vscode/
 .workbuddy/
 node_modules/
-frontend/node_modules/
-frontend/unpackage/
-frontend/project.private.config.json
-software_copyright_src/
 .DS_Store
+# 评测运行产物（trace 与判分结果，不入库；评测集本身要入库）
+eval/results/

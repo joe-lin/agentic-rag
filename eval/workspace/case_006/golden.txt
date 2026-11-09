@@ -1,0 +1,10 @@
+# case_006 固定证据包
+# 快照：collection=agentic-rag / k=3 / chunk_size=200 / embedding=BAAI/bge-m3
+# 用途：judge 核对 groundedness 与 retrieval_quality；不喂给被测 Agent。
+
+[chunk 14] source=oceanbase一体化分布式数据库.pdf page=6
+738 项
+我是 OceanBase
+OceanBase 是 100% 根自研的一体化分布式数据库，基于单机分布式一体化架构，高度兼容 Oracle 和 MySQL，支持事务处理（TP）和实时分析处理（AP）等多工作
+负载，原生支持向量检索与多模数据混合检索，助力客户构建面向 GenAI 的一体化数据底座。已广泛应用于金融、运营商、零售、互联网及公共服务等行业，助力
+---

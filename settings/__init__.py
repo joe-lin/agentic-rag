@@ -53,7 +53,14 @@ embedding_base_url = _get("EMBEDDING_BASE_URL", "")
 # 向量库
 collection_name = "agentic-rag"
 persist_directory = "data/chroma_db"
-k =  3
+k = 6
+# 检索后重排：向量召回 candidate_k 条候选，再用交叉编码器 rerank 取前 k 条。
+# 基础 bi-encoder 对“问句 vs 密集事实清单”类查询排序偏弱，reranker 可显著纠正。
+rerank_model = _get("RERANK_MODEL", "BAAI/bge-reranker-v2-m3")
+candidate_k = _int("CANDIDATE_K", 20)
+# HyDE：检索前先用 LLM 生成“假设性答案”作为检索嵌入，弥补 bi-encoder
+# 对“抽象问句 vs 密集事实清单”匹配弱的短板。可设 HYDE_ENABLED=false 关闭。
+hyde_enabled = _bool("HYDE_ENABLED", True)
 data_path = "data"
 md5_hex_store = "rag/md5.txt"
 allow_knowledge_file_type = ["txt","pdf"]

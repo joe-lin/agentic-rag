@@ -1,0 +1,38 @@
+{
+  "dataset_name": "agentic-rag-eval-v1",
+  "version": "0.1.0",
+  "profile": {
+    "dimensions": [
+      {"key": "groundedness",      "name": "事实可回溯",   "weight": 0.25},
+      {"key": "retrieval_quality", "name": "检索质量",     "weight": 0.20},
+      {"key": "tool_decision",     "name": "工具决策",     "weight": 0.15},
+      {"key": "abstention",        "name": "拒答与抗幻觉", "weight": 0.15},
+      {"key": "task_completion",   "name": "任务完成度",   "weight": 0.15},
+      {"key": "instruction_follow","name": "指令遵循",     "weight": 0.10}
+    ],
+    "scoring": {
+      "scale": [0, 5, 10],
+      "unscored_dimensions": "renormalize",
+      "note": "每条 case 只在 checklist_by_dim 里声明相关维度；未声明的维度不打分，其余权重按比例归一化。维度 key 必须在本表先注册，case 才可用 dimension_weights 覆盖。"
+    },
+    "aggregation": {
+      "pass_threshold": 60,
+      "excellent_threshold": 85,
+      "hard_gate": true
+    },
+    "kb_snapshot": {
+      "collection": "agentic-rag",
+      "persist_directory": "data/chroma_db",
+      "k": 3,
+      "chunk_size": 200,
+      "chunk_overlap": 20,
+      "embedding_model": "BAAI/bge-m3",
+      "chunk_count": 400,
+      "documents": [
+        {"file": "data/oceanbase一体化分布式数据库.pdf",              "md5": "dc20d63a3b5d493af9e2c857c37a6fcc"},
+        {"file": "data/oceanbase向量能力与ai应用案例集（2025).pdf",  "md5": "82f9361a3f78101634408fc10a059dc3"}
+      ],
+      "note": "知识库任一参数变化都会让分数不可比；重跑 load_document / 换 embedding / 调 k 后必须更新本快照并全量重测。"
+    }
+  }
+}
