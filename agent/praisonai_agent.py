@@ -11,11 +11,11 @@ from praisonaiagents.tools import tavily_search as web_search
 from types import GeneratorType
 
 
-# import sys
-# from pathlib import Path
-# sys.path.append(str(Path(__file__).parent.parent))
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
 from model.factory import praison_llm as llm
-from utils.prompt_loader import load_product_expert_prompts
+from utils.prompt_loader import load_product_expert_prompt
 from utils.trace import RunResult, begin, end
 from tools.agent_tools import rag_summarize
 from tools.wechat_publisher import publish_wechat_oa
@@ -28,7 +28,7 @@ def build_agent() -> Agent:
     """构造被测 Agent。评测与生产共用同一份构造逻辑，避免评测跑的是另一个 Agent。"""
     agent = Agent(
         name="产品专家"
-        ,instructions=load_product_expert_prompts()
+        ,instructions=load_product_expert_prompt()
         ,tools=[rag_summarize, web_search, publish_wechat_oa]
         ,llm=llm
     )

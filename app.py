@@ -1,33 +1,24 @@
 import sys
 import time
-import importlib.util
-import traceback
 from pathlib import Path
 
 import streamlit as st
 
+# agent/ 无 __init__.py，无法稳定走 `from agent.agent_factory` 的命名空间包导入
+# （streamlit 运行脚本时 sys.path 行为与普通 python 不同，易触发 ModuleNotFoundError）。
+# 改为把 agent 目录注入 sys.path 后直接 import 模块；模块内部会自行把 agent/ 与项目根
+# 加入 path，自动解析 model / utils / tools 等绝对导入。
+_AGENT_DIR = str(Path(__file__).resolve().parent / "agent")
+if _AGENT_DIR not in sys.path:
+    sys.path.insert(0, _AGENT_DIR)
 
-# ---------------------------------------------------------------------------
-# 健壮加载带连字符的 agent 入口（普通 `import agent.praisonai-Agent` 会被连字符
-# 解析失败）。直接用 importlib 按路径加载，等价于 eval/runner.load_agent_entry。
-# ---------------------------------------------------------------------------
-def _load_build_agent():
-    entry = Path(__file__).resolve().parent / "agent" / "praisonai-agent.py"
-    agent_dir = str(entry.parent)
-    if agent_dir not in sys.path:
-        sys.path.insert(0, agent_dir)
-    spec = importlib.util.spec_from_file_location("agentic_rag_entry", entry)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module.build_agent
+from agent_factory import productor  # noqa: E402
 
 
 @st.cache_resource
 def get_agent():
-    """构造 Agent 并缓存（全局仅一次），构造异常会被上层 try 捕获。"""
-    return _load_build_agent()()
-
+    """构造 Agent 并缓存（全局仅一次）。"""
+    return productor
 
 st.title("智能问答机器人")
 st.divider()

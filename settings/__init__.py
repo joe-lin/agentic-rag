@@ -70,7 +70,5 @@ chunk_overlap = 20
 separators = ["\n\n", "\n", "。", ".","?","？","!", "；"," ",""]
 
 #prompts
-main_prompt_path = "prompts/main_prompt.txt"
 rag_summarize_prompt_path = "prompts/rag_summarize.txt"
-report_prompt_path = "prompts/report_prompt.txt"
 product_expert_prompt = "prompts/product_expert.txt"
